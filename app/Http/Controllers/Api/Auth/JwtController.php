@@ -22,4 +22,11 @@ class JwtController extends Controller
             'token'=> $token
         ]);
     }
+
+    public function logout()
+    {
+        auth('api')->logout();
+
+        return response()->json(['msg'=> 'Logout feito com sucesso!'], 200);
+    }
 }
