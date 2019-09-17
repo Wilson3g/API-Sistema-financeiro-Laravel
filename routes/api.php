@@ -20,6 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->namespace('Api')->group(function(){
 
+    // Rota de login com autenticação
+    Route::post('login', 'Auth\\JwtController@login');
+
     // Rotas dos registros
     Route::name('registro.')->group(function(){
         Route::resource('registro', 'RegistrosController'); //api/v1/registro
