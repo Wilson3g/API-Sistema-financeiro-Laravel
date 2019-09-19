@@ -30,8 +30,7 @@ Route::prefix('v1')->namespace('Api')->group(function(){
         // Rotas dos registros
         Route::name('registro.')->group(function(){
             Route::resource('registro', 'RegistrosController'); //api/v1/registro
-            Route::put('pagar/{id}', 'RegistrosController@pay');
-            Route::put('receber/{id}', 'RegistrosController@receive');
+            Route::put('baixa/{id}', 'RegistrosController@baixa');
         });
 
         // Rotas dos usuários

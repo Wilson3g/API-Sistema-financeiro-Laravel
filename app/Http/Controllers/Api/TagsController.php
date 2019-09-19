@@ -51,7 +51,7 @@ class TagsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json()(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['erro: ' => $e->getMessage()], 401);
         }
     }
 
@@ -76,7 +76,7 @@ class TagsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json()(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['erro: ' => $e->getMessage()], 401);
         }
     }
 
@@ -104,7 +104,7 @@ class TagsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json()(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['erro: ' => $e->getMessage()], 401);
         }
     }
 
@@ -119,7 +119,8 @@ class TagsController extends Controller
         try{
             
             $tag = $this->tag->findOrFail($id); // envia a variável com requests para a tabela
-            $tag->delete($id);
+            $tag->registro()->detach(); // apaga os registros da tabela pivot
+            $tag->delete($id); // deleta o registro pelo id
 
             return response()->json([
                 'data'=> [
@@ -128,13 +129,14 @@ class TagsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json()(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['erro: ' => $e->getMessage()], 401);
         }
     }
 
     public function tags($id)
     {
         try{
+
             $tags = $this->tag->findOrFail($id);
 
             return response()->json([

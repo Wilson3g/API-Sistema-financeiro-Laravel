@@ -15,4 +15,5 @@ class Tag extends Model
     {
         return $this->belongsToMany(Registro::class, 'registros_has_tags');
     }
+
 }

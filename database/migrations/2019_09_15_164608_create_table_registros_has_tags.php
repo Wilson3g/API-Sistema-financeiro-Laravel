@@ -19,6 +19,7 @@ class CreateTableRegistrosHasTags extends Migration
 
             $table->foreign('registros_id')->references('id')->on('registros');
             $table->foreign('tags_id')->references('id')->on('tags');
+
         });
     }
 

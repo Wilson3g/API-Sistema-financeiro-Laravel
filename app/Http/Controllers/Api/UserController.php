@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;// Importando o model de cadastro
-// use App\requests\UserRequest; //importação do arquivo de validação
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
