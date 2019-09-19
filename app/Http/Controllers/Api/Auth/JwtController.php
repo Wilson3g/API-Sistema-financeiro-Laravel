@@ -14,7 +14,7 @@ class JwtController extends Controller
 
         // Confere se os dados são veridicos
         if(!$token = auth('api')->attempt($credentials)){
-            return response()->json(['msg'=>'Não autorizado'], 401);
+            return response()->json(['msg'=>'Usuário ou senha inválidos!'], 401);
         }
 
         // Se autorizado, retorna o token para o usuário

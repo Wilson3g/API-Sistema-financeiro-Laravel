@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;// Importando o model de cadastro
+// Definindo o model de User
+use App\User; 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -21,7 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // mosta todos os dados em grupos de 10
+        // mosta todos os dados em ordem decrescente
         $user = $this->user->orderby('id', 'desc')->get();
         return response()->json($user, 200);
     }
@@ -44,6 +45,7 @@ class UserController extends Controller
         // tratamento de erros
         try{
 
+            // Encripta a senha digitada
             $data['password'] = bcrypt($data['password']);
             
             // envia a variavel com requests para a tabela
@@ -70,12 +72,12 @@ class UserController extends Controller
     {
         try{
             
-            // envia a variavel com requests para a tabela
+            // Busca os dados na tabela pelo id do usuário
             $user = $this->user->findOrFail($id);
 
             return response()->json([
                 'data'=> [
-                    'msg'=> 'Usuário encontrado!',
+                    'msg'=> 'Perfil encontrado!',
                     'data'=> $user
                 ]
             ], 200);
@@ -94,9 +96,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Salva todos os requests em uma variavel
         $data = $request->all();
 
+        // Verifica se o usuário informou uma senha
         if($request->has('password') && $request->get('password')){
+            // Encripta a senha informada
             $data['password'] = bcrypt($data['password']);
         }else{
             unset($data['password']);
@@ -106,11 +111,12 @@ class UserController extends Controller
             
             // envia a variavel com requests para a tabela
             $user = $this->user->findOrFail($id);
+            // atualiza o usuário pelo id
             $user->update($data);
 
             return response()->json([
                 'data'=> [
-                    'msg'=> 'Usuário atualizado com sucesso!'
+                    'msg'=> 'Perfil atualizado com sucesso!'
                 ]
             ], 200);
 
@@ -128,13 +134,15 @@ class UserController extends Controller
     public function destroy($id)
     {
         try{
-            
-            $user = $this->user->findOrFail($id); // envia a variável com requests para a tabela
-            $user->delete($id); // deleta o user pelo id
+
+            // envia a variável com requests para a tabela
+            $user = $this->user->findOrFail($id); 
+            // deleta o user pelo id
+            $user->delete($id); 
 
             return response()->json([
                 'data'=> [
-                    'msg'=> 'Usuário deletado com sucesso!'
+                    'msg'=> 'Perfil deletado com sucesso!'
                 ]
             ], 200);
 

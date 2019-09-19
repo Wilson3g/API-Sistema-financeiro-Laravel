@@ -41,7 +41,7 @@ class TagsController extends Controller
         // tratamento de erros
         try{
             
-            // envia a variavel com requests para a tabela
+            // envia os dados do request para a tabela
             $tag = $this->tag->create($data);
 
             return response()->json([
@@ -65,7 +65,7 @@ class TagsController extends Controller
     {
         try{
             
-            // envia a variavel com requests para a tabela
+            // realiza uma busca na tabela com o id informado
             $tag = $this->tag->findOrFail($id);
 
             return response()->json([
@@ -93,8 +93,9 @@ class TagsController extends Controller
 
         try{
             
-            // envia a variavel com requests para a tabela
+            // realiza uma busca na tabela com o id informado
             $tag = $this->tag->findOrFail($id);
+            // Realiza a atualização da tag pelo id informado
             $tag->update($data);
 
             return response()->json([
@@ -117,10 +118,12 @@ class TagsController extends Controller
     public function destroy($id)
     {
         try{
-            
-            $tag = $this->tag->findOrFail($id); // envia a variável com requests para a tabela
-            $tag->registro()->detach(); // apaga os registros da tabela pivot
-            $tag->delete($id); // deleta o registro pelo id
+            // envia a variável com requests para a tabela
+            $tag = $this->tag->findOrFail($id); 
+            // destaca a tabela tags da tabela pivot
+            $tag->registro()->detach(); 
+            // deleta o registro pelo id
+            $tag->delete($id); 
 
             return response()->json([
                 'data'=> [
@@ -140,7 +143,8 @@ class TagsController extends Controller
             $tags = $this->tag->findOrFail($id);
 
             return response()->json([
-                'data' => $tags->registro //pega a relação dos registros
+                //mostra a relação dos registros
+                'data' => $tags->registro 
             ], 200);
 
         }catch(\Exception $e){

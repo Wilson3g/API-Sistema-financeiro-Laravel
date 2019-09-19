@@ -24,24 +24,24 @@ Route::prefix('v1')->namespace('Api')->group(function(){
     Route::post('login', 'Auth\\JwtController@login');
     Route::get('logout', 'Auth\\JwtController@logout');
 
-    Route::post('user', 'UserController@store');
+    Route::post('users', 'UserController@store');
 
     Route::group(['middleware'=>['jwt-auth']], function (){
         // Rotas dos registros
-        Route::name('registro.')->group(function(){
-            Route::resource('registro', 'RegistrosController'); //api/v1/registro
-            Route::put('baixa/{id}', 'RegistrosController@baixa');
+        Route::name('registros.')->group(function(){
+            Route::resource('registros', 'RegistrosController'); //api/v1/registro
+            Route::put('baixas/{id}', 'RegistrosController@baixa');
         });
 
         // Rotas dos usuários
-        Route::name('user.')->group(function(){
-            Route::resource('user', 'UserController')->except(['store']);
+        Route::name('users.')->group(function(){
+            Route::resource('users', 'UserController')->except(['store']);
         });
 
         // Rotas das tags
         Route::name('tag.')->group(function(){
             Route::get('/tags/{id}/registros', 'TagsController@tags');
-            Route::resource('tag', 'TagsController');
+            Route::resource('tags', 'TagsController');
         }); 
     });
 });

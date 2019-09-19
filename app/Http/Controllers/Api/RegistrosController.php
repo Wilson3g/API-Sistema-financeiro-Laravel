@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\RegistroRequest;//importação do arquivo de validação
-use App\Registro; // Importando o model Registro
+//Definição do arquivo de validação
+use App\Http\Requests\RegistroRequest;
+// Definição do model Registro
+use App\Registro; 
+// Definição do model Tags
 use App\TagsController;
 use App\Http\Controllers\Controller;
 
@@ -29,7 +32,7 @@ class RegistrosController extends Controller
     {
         try{
             
-            // envia a variavel com requests para a tabela
+            // faz uma busca na tabela usando o id
             $registros = auth('api')->user()->registro()->findOrFail($id);
 
             return response()->json([
@@ -54,7 +57,7 @@ class RegistrosController extends Controller
             
             $data['user_id'] = auth('api')->user()->id;
 
-            // envia a variavel com requests para a tabela
+            // envia os requests para a tabela
             $registro = $this->registro->create($data);
 
             if(isset($data['tags']) && count($data['tags'])){
@@ -68,7 +71,7 @@ class RegistrosController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['Tag inexistente (cadastre ou selecione outra tag) Erro: ' => $e->getMessage()], 401);
         }
     }
 
@@ -94,7 +97,7 @@ class RegistrosController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
+            return response()->json(['Tag inexistente (cadastre ou selecione outra tag) Erro: ' => $e->getMessage()], 401);
         }
     }
 
