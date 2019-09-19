@@ -23,7 +23,7 @@ class CreateTableRegistros extends Migration
             $table->boolean('status')->nullable(true); //Campo pode ser nulo
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

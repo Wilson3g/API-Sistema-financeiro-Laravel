@@ -17,8 +17,8 @@ class CreateTableRegistrosHasTags extends Migration
             $table->unsignedBigInteger('registros_id');
             $table->unsignedBigInteger('tags_id');
 
-            $table->foreign('registros_id')->references('id')->on('registros');
-            $table->foreign('tags_id')->references('id')->on('tags');
+            $table->foreign('registros_id')->references('id')->on('registros')->onDelete('cascade');
+            $table->foreign('tags_id')->references('id')->on('tags')->onDelete('cascade');
 
         });
     }
