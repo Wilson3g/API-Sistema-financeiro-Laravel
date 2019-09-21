@@ -124,14 +124,18 @@ class RegistrosController extends Controller
     {
         try{
             
-            $registro = $this->registro->findOrFail($id); // encontra o registro pelo id
-            // $registro->update(['status' => 1, 'tipo'=> 'P']); // altera o campo status de 0 para 1
+            // encontra o registro pelo id
+            $registro = $this->registro->findOrFail($id); 
 
-            if($registro->tipo == 'C'){
-                $registro->update(['status' => 1, 'tipo'=> 'R']);
-            }else{
-                $registro->update(['status' => 1, 'tipo'=> 'P']);
-            }
+             $registro->tipo == 'C' ? $valor = $registro->tipo == 'C' : $valor = $registro->tipo == 'P';
+
+             $registro->update(['status' => 1, 'tipo'=> $valor]);
+            
+//             if($registro->tipo == 'C'){
+//                 $registro->update(['status' => 1, 'tipo'=> 'R']);
+//             }else{
+//                 $registro->update(['status' => 1, 'tipo'=> 'P']);
+//             }
 
             return response()->json([
                 'data'=> [
