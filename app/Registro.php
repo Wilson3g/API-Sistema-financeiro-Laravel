@@ -17,8 +17,7 @@ class Registro extends Model
 
     public function user()
     {
-        // Retorna a associação com base no objeto
-        return $this->belongsTo(User::class); //Perternce ao objeto usuário
+        return $this->belongsTo(User::class);
     }
 
     public function tags()

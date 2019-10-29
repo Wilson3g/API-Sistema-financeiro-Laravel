@@ -40,7 +40,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function registro()
     {
-        return $this->hasMany(Registro::class); //User tem muitos registros
+        return $this->hasMany(Registro::class);
     }
 
     public function getJWTIdentifier()

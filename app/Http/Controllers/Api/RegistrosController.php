@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-//Definição do arquivo de validação
 use App\Http\Requests\RegistroRequest;
-// Definição do model Registro
 use App\Registro; 
-// Definição do model Tags
 use App\TagsController;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +11,6 @@ class RegistrosController extends Controller
 {
     private $registro;
 
-    // Injetando o model Registro
     public function __construct(Registro $registro)
     {
         $this->registro = $registro;
@@ -22,7 +18,7 @@ class RegistrosController extends Controller
 
     public function index()
     {
-        // mosta todos os registros do usuario
+
         $registros = auth('api')->user()->registro;
 
         return response()->json($registros, 200);
@@ -30,34 +26,24 @@ class RegistrosController extends Controller
 
     public function show($id)
     {
-        try{
-            
-            // faz uma busca na tabela usando o id
-            $registros = auth('api')->user()->registro()->findOrFail($id);
+        $registros = auth('api')->user()->registro()->findOrFail($id);
 
-            return response()->json([
-                'data'=> [
-                    'msg'=> 'Encontrado com sucesso!',
-                    'data'=> $registros
-                ]
-            ], 200);
-
-        }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
-        }
+        return response()->json([
+            'data'=> [
+                'msg'=> 'Encontrado com sucesso!',
+                'data'=> $registros
+            ]
+        ], 200);
     }
 
     public function store(RegistroRequest $request)
     {
-        // Salva todos os requests em uma variavel
         $data = $request->all();
 
-        // tratamento de erros
         try{
             
             $data['user_id'] = auth('api')->user()->id;
 
-            // envia os requests para a tabela
             $registro = $this->registro->create($data);
 
             if(isset($data['tags']) && count($data['tags'])){
@@ -80,68 +66,51 @@ class RegistrosController extends Controller
 
         $data = $request->all();
 
-        try{
-            
-            // envia a variavel com requests para a tabela
-            $registros = auth('api')->user()->registro()->findOrFail($id);
-            $registros->update($data);
+        $registros = auth('api')->user()->registro()->findOrFail($id);
+        $registros->update($data);
 
-            if(isset($data['tags']) && count($data['tags'])){
-                $registros->tags()->sync($data['tags']);
-            }
-
-            return response()->json([
-                'data'=> [
-                    'msg'=> 'Conta atualizada com sucesso!'
-                ]
-            ], 200);
-
-        }catch(\Exception $e){
-            return response()->json(['Tag inexistente (cadastre ou selecione outra tag) Erro: ' => $e->getMessage()], 401);
+        if(isset($data['tags']) && count($data['tags'])){
+            $registros->tags()->sync($data['tags']);
         }
+
+        return response()->json([
+            'data'=> [
+                'msg'=> 'Conta atualizada com sucesso!'
+            ]
+        ], 200);
     }
 
     public function destroy($id)
     {
-        try{
             
-            $registro = auth('api')->user()->registro()->findOrFail($id); // envia a variável com requests para a tabela
-            $registro->tags()->detach(); // apaga os registros da tabela pivot
-            $registro->delete($id); // deleta o registro pelo id
-            
-            return response()->json([
-                'data'=> [
-                    'msg'=> 'Conta deletada com sucesso!'
-                ]
-            ], 200);
+        $registro = auth('api')->user()->registro()->findOrFail($id);
+        $registro->tags()->detach();
+        $registro->delete($id); 
+        
+        return response()->json([
+            'data'=> [
+                'msg'=> 'Conta deletada com sucesso!'
+            ]
+        ], 200);
 
-        }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
-        }
     }
 
     public function baixa($id, RegistroRequest $request)
     {
-        try{
             
-            // encontra o registro pelo id
-            $registro = $this->registro->findOrFail($id); 
-            
-            if($registro->tipo == 'C'){
-                $registro->update(['status' => 1, 'tipo'=> 'R']);
-            }else{
-                $registro->update(['status' => 1, 'tipo'=> 'P']);
-            }
-
-            return response()->json([
-                'data'=> [
-                    'msg'=> 'Conta atualizada com sucesso!'
-                ]
-            ], 200);
-
-        }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
+        $registro = $this->registro->findOrFail($id); 
+        
+        if($registro->tipo == 'C'){
+            $registro->update(['status' => 1, 'tipo'=> 'R']);
+        }else{
+            $registro->update(['status' => 1, 'tipo'=> 'P']);
         }
+
+        return response()->json([
+            'data'=> [
+                'msg'=> 'Conta atualizada com sucesso!'
+            ]
+        ], 200);
 
     }
 }
