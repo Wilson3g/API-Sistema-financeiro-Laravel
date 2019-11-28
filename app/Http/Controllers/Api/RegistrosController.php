@@ -6,6 +6,7 @@ use App\Http\Requests\RegistroRequest;
 use App\Registro; 
 use App\TagsController;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class RegistrosController extends Controller
 {
@@ -21,7 +22,11 @@ class RegistrosController extends Controller
 
         $registros = auth('api')->user()->registro;
 
-        return response()->json($registros, 200);
+        return response()->json([
+            'message' => 'Registros!',
+            'success' => true,
+            'data' => $registros
+        ], Response::HTTP_OK);
     }
 
     public function show($id)
@@ -29,11 +34,10 @@ class RegistrosController extends Controller
         $registros = auth('api')->user()->registro()->findOrFail($id);
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Encontrado com sucesso!',
-                'data'=> $registros
-            ]
-        ], 200);
+            'message' => 'Registros!',
+            'success' => true,
+            'data' => $registros
+        ], Response::HTTP_OK);
     }
 
     public function store(RegistroRequest $request)
@@ -51,13 +55,14 @@ class RegistrosController extends Controller
             }
 
             return response()->json([
-                'data'=> [
-                    'msg'=> 'Conta registrada com sucesso!'
-                ]
-            ], 200);
+                'message' => 'Registro salvo com sucesso',
+                'success' => true,
+            ], Response::HTTP_OK);
 
         }catch(\Exception $e){
-            return response()->json(['Tag inexistente (cadastre ou selecione outra tag) Erro: ' => $e->getMessage()], 401);
+            return response()->json([
+                'Ops, tivemos um problema... Erro: ' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -74,10 +79,9 @@ class RegistrosController extends Controller
         }
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Conta atualizada com sucesso!'
-            ]
-        ], 200);
+            'message' => 'Atualizado com sucesso',
+            'success' => true
+        ], Response::HTTP_OK);
     }
 
     public function destroy($id)
@@ -88,29 +92,23 @@ class RegistrosController extends Controller
         $registro->delete($id); 
         
         return response()->json([
-            'data'=> [
-                'msg'=> 'Conta deletada com sucesso!'
-            ]
+            'message' => 'Registro deletado com sucesso',
+            'success' => true
         ], 200);
 
     }
 
-    public function baixa($id, RegistroRequest $request)
+    public function baixa($id)
     {
-            
-        $registro = $this->registro->findOrFail($id); 
+        $registro = $this->registro->findOrFail($id);
+
+        $checkType =  strtoupper($registro->tipo);
         
-        if($registro->tipo == 'C'){
-            $registro->update(['status' => 1, 'tipo'=> 'R']);
-        }else{
-            $registro->update(['status' => 1, 'tipo'=> 'P']);
-        }
+        $checkType == 'C'  ? $registro->update(['status' => 1, 'tipo'=> 'R']) : $registro->update(['status' => 1, 'tipo'=> 'P']);
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Conta atualizada com sucesso!'
-            ]
-        ], 200);
-
+            'message' => 'Atualização registrada!',
+            'success' => true
+        ], Response::HTTP_OK);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\TagRequest;
 use App\Tag;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class TagsController extends Controller
 {
@@ -17,13 +18,17 @@ class TagsController extends Controller
     public function __construct(Tag $tag)
     {
         $this->tag = $tag;
-    } 
+    }
 
     public function index()
     {
         $tag = $this->tag->orderby('id', 'desc')->get();
 
-        return response()->json(['data'=>$tag], 200);
+        return response()->json([
+            'message' => 'Tags!',
+            'success' => true,
+            'data'=>$tag
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -37,17 +42,18 @@ class TagsController extends Controller
         $data = $request->all();
 
         try{
-            
+
             $tag = $this->tag->create($data);
 
             return response()->json([
-                'data'=> [
-                    'msg'=> 'Tag registrada com sucesso!'
-                ]
-            ], 200);
+                'message' => 'Tag criada com sucesso!',
+                'success' => true
+            ], Response::HTTP_OK);
 
         }catch(\Exception $e){
-            return response()->json(['erro: ' => $e->getMessage()], 401);
+            return response()->json([
+                'erro: ' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -62,11 +68,10 @@ class TagsController extends Controller
         $tag = $this->tag->findOrFail($id);
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Tag encontrada!',
-                'data'=> $tag
-            ]
-        ], 200);
+            'message' => 'Tag encontrada!',
+            'success' => true,
+            'data' => $tag
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -84,10 +89,8 @@ class TagsController extends Controller
         $tag->update($data);
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Tag atualizada com sucesso!'
-            ]
-        ], 200);
+            'message'=> 'Tag atualizada com sucesso!'
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -103,10 +106,8 @@ class TagsController extends Controller
             $tag->delete($id); 
 
             return response()->json([
-                'data'=> [
-                    'msg'=> 'Tag deletada com sucesso!'
-                ]
-            ], 200);
+                'message'=> 'Tag deletada com sucesso!'
+            ], Response::HTTP_OK);
 
     }
 
@@ -115,8 +116,8 @@ class TagsController extends Controller
         $tags = $this->tag->findOrFail($id);
 
         return response()->json([
-            'data' => $tags->registro 
-        ], 200);
+            'data' => $tags->registro
+        ], Response::HTTP_OK);
         
     }
 }

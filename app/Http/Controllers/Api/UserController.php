@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\User; 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -23,7 +23,13 @@ class UserController extends Controller
     public function index()
     {
         $user = $this->user->orderby('id', 'desc')->get();
-        return response()->json($user, 200);
+//        return response()->json($user, 200);
+
+        return response()->json([
+            'message' => 'Todos os perfis',
+            'success' => true,
+            'data' => $user
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -47,7 +53,7 @@ class UserController extends Controller
 
             return response()->json([
                 'data'=> [
-                    'msg'=> 'Usuário cadastrado com sucesso!'
+                    'msg'=> 'Cadastro realizado com sucesso!'
                 ]
             ], 200);
 
@@ -67,11 +73,10 @@ class UserController extends Controller
         $user = $this->user->findOrFail($id);
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Perfil encontrado!',
-                'data'=> $user
-            ]
-        ], 200);
+            'message' => 'Usuário encontrado',
+            'success' => true,
+            'data' => $user
+        ], Response::HTTP_OK);
 
     }
 
@@ -79,32 +84,24 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-
-        $data = $request->all();
-
-        if($request->has('password') && $request->get('password')){
-
-            $data['password'] = bcrypt($data['password']);
-        }else{
-            unset($data['password']);
-        }
-
-
         $user = $this->user->findOrFail($id);
 
-        $user->update($data);
+        $user->update($request->all('name'));
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Perfil atualizado com sucesso!'
-            ]
-        ], 200);
+                'message'=> 'Perfil atualizado com sucesso!',
+                'success' => true,
+        ], Response::HTTP_OK);
 
+    }
+
+    public function upadatePassword(Request $request)
+    {
+        // Criar método
     }
 
     /**
@@ -121,10 +118,9 @@ class UserController extends Controller
         $user->delete($id); 
 
         return response()->json([
-            'data'=> [
-                'msg'=> 'Perfil deletado com sucesso!'
-            ]
-        ], 200);
+            'message' => 'Perfil deletado com sucesso!',
+            'success' => true
+        ], Response::HTTP_OK);
 
     }
 }

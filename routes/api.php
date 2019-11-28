@@ -33,7 +33,7 @@ Route::prefix('v1')->namespace('Api')->group(function(){
         });
 
         Route::name('users.')->group(function(){
-            Route::resource('users', 'UserController')->except(['store']);
+            Route::resource('users', 'UserController')->except('store');
         });
 
         Route::name('tag.')->group(function(){
