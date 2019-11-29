@@ -88,9 +88,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($this->user->where('id', $id)->exists() == false)
+            return response()->json([
+                'message' => 'Usuário inválido',
+                'success' => false
+            ], Response::HTTP_NOT_FOUND);
+
         $user = $this->user->findOrFail($id);
 
-        $user->update($request->all('name'));
+        $user->update();
 
         return response()->json([
                 'message'=> 'Perfil atualizado com sucesso!',

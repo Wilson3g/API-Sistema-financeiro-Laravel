@@ -6,6 +6,7 @@ use App\Http\Requests\RegistroRequest;
 use App\Registro; 
 use App\TagsController;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
 
 class RegistrosController extends Controller
@@ -42,11 +43,14 @@ class RegistrosController extends Controller
 
     public function store(RegistroRequest $request)
     {
-        $data = $request->all();
 
         try{
-            
+            $data = $request->all();
+
             $data['user_id'] = auth('api')->user()->id;
+
+            if(strtotime($request->input('data_vencimento')) < strtotime(Carbon::now()->toDateString()))
+                return "data invalida";
 
             $registro = $this->registro->create($data);
 
@@ -69,10 +73,18 @@ class RegistrosController extends Controller
     public function update($id, RegistroRequest $request)
     {
 
+        if($this->registro->where('id', $id)->exists() == false)
+            return response()->json([
+                'message' => 'Registro não encontrado',
+                'success' => false
+            ], Response::HTTP_NOT_FOUND);
+
         $data = $request->all();
 
         $registros = auth('api')->user()->registro()->findOrFail($id);
-        $registros->update($data);
+//        $registros->update($data);
+
+        dd($registros);
 
         if(isset($data['tags']) && count($data['tags'])){
             $registros->tags()->sync($data['tags']);

@@ -83,6 +83,12 @@ class TagsController extends Controller
      */
     public function update(TagRequest $request, $id)
     {
+        if($this->tag->where('id', $id)->exists() == false)
+            return response()->json([
+                'message' => 'Tag não encontrada',
+                'success' => false
+            ], Response::HTTP_NOT_FOUND);
+
         $data = $request->all();
             
         $tag = $this->tag->findOrFail($id);
