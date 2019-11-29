@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\RegistroRequest;
-use App\Registro; 
-use App\TagsController;
+use App\Registro;
+use App\Tag;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use DB;
 
 class RegistrosController extends Controller
 {
@@ -82,9 +83,7 @@ class RegistrosController extends Controller
         $data = $request->all();
 
         $registros = auth('api')->user()->registro()->findOrFail($id);
-//        $registros->update($data);
-
-        dd($registros);
+        $registros->update($data);
 
         if(isset($data['tags']) && count($data['tags'])){
             $registros->tags()->sync($data['tags']);
@@ -122,5 +121,22 @@ class RegistrosController extends Controller
             'message' => 'Atualização registrada!',
             'success' => true
         ], Response::HTTP_OK);
+    }
+
+    public function searchForTags($id)
+    {
+//      Gostaria de explicar, mas nem eu entendi foi nada :)
+        $registros = $this->registro->whereHas('tags', function($query) use ($id) {
+            $query->where([
+                ['tags.id', $id],
+                ['user_id', auth('api')->user()->id]
+            ]);
+        })->select('descricao', 'data_vencimento', 'valor', 'tipo', 'status')->get();
+
+        return response()->json([
+            'message' => 'Registros!',
+            'success' => true,
+            'data' => $registros
+        ]);
     }
 }

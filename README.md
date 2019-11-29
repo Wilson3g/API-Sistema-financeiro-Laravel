@@ -15,15 +15,8 @@
 <h2>Rotas da API</h2>
 
 <h3><i>Usuários</i></h3>
-
-<h4>Criação de novo usuário</h4>
-<p><strong>POST -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/users</p>
-<h4>Alteração de dados</h4>
-<p><strong>PUT -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/users/{id}</p>
-<h4>Exclusão da conta de usuário</h4>
-<p><strong>DELETE -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/users/{id}</p>
-
-<h4><strong>OBS: </strong>Dados necessários para o registro de usuário</h4>
+<h4>OBS: Todas as rotas estão no arquivo "financeiro.postman_collection.json"</h4>
+<h4>Dados necessários para o registro de usuário</h4>
 
 <ul>
 	<li>Name</li>
@@ -35,14 +28,7 @@
 
 <h3><i>Tags</i></h3>
 
-<h4>Criação de novas tags</h4>
-<p><strong>POST -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/tags</p>
-<h4>Alteração de dados</h4>
-<p><strong>PUT -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/tags/{id}</p>
-<h4>Exclusão da tag</h4>
-<p><strong>DELETE -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/tags/{id}</p>
-
-<h4><strong>OBS: </strong>Dados necessários para o registro de tags</h4>
+<h4>Dados necessários para o registro de tags</h4>
 
 <ul>
 	<li>Descricao</li>
@@ -52,18 +38,7 @@
 
 <h3><i>Lançamentos</i></h3>
 
-<h4>Listagem de lançamentos</h4>
-<p><strong>GET -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/registros</p>
-<h4>Criação de novos lançamentos</h4>
-<p><strong>POST -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/registros</p>
-<h4>Alteração de dados</h4>
-<p><strong>PUT -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/registros/{id}</p>
-<h4>Exclusão da conta de lançamento</h4>
-<p><strong>DELETE -</strong>  http://localhost/sistema-financeiro/laravel/public/api/v1/registros/{id}</p>
-<h4>Baixa de lançamentos</h4>
-<p><strong>PUT -</strong> http://localhost/sistema-financeiro/laravel/public/api/v1/baixas/{id}</p>
-
-<h4><strong>OBS: </strong>Dados necessários para o registro de lançamentos</h4>
+<h4>Dados necessários para o registro de lançamentos</h4>
 
 <ul>
 	<li>Descrição</li>
@@ -74,10 +49,3 @@
 </ul>
 
 PS.:As tags são armazenadas em um array, por isso é importante colocar o "[]". Pode-se colocar mais de uma tag, desde que todas estejam devidamente cadastradas.
-
-<hr>
-
-<h3><i>Login e logout</i></h3>
-
-<p><strong>POST -</strong> http://localhost/sistema-financeiro/laravel/public/api/v1/login</p>
-<p><strong>GET -</strong> http://localhost/sistema-financeiro/laravel/public/api/v1/logout</p>

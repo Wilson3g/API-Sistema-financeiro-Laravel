@@ -30,6 +30,7 @@ Route::prefix('v1')->namespace('Api')->group(function(){
         Route::name('registros.')->group(function(){
             Route::resource('registros', 'RegistrosController');
             Route::put('baixas/{id}', 'RegistrosController@baixa');
+            Route::get('buscar/{id}', 'RegistrosController@searchForTags');
         });
 
         Route::name('users.')->group(function(){
@@ -37,7 +38,7 @@ Route::prefix('v1')->namespace('Api')->group(function(){
         });
 
         Route::name('tag.')->group(function(){
-            Route::get('/tags/{id}/registros', 'TagsController@tags');
+            Route::get('tags/{id}/registros', 'TagsController@tags');
             Route::resource('tags', 'TagsController');
         }); 
     });
