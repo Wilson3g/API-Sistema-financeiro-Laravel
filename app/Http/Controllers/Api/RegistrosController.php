@@ -125,7 +125,8 @@ class RegistrosController extends Controller
 
     public function searchForTags($id)
     {
-//      Gostaria de explicar, mas nem eu entendi foi nada :)
+        //Gostaria de explicar, mas nem eu entendi :)
+        //Faz uma consulta usando as tabelas pivot
         $registros = $this->registro->whereHas('tags', function($query) use ($id) {
             $query->where([
                 ['tags.id', $id],
