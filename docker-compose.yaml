@@ -9,10 +9,10 @@ services:
     networks:
       - app-network
   
-  db:
+  mysql:
     image: mysql:5.7
     command: --innodb-use-native-aio=0
-    container_name: db
+    container_name: database
     restart: always
     tty: true
     ports: 
