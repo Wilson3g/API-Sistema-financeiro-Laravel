@@ -4,6 +4,14 @@
 
 <p>API para controle de gastos, registrando contas a pagar e a receber</p>
 
+<h2>Instalacao com Docker</h2>
+
+<ul>
+  <li>Aterar o nome do arquivo .env.example para .env</li>
+  <li>docker-compose up -d</li>
+  <li>php artisan migrate</li>
+</ul>
+
 <h2>Funcionalidades</h2>
 
 <ul>
@@ -16,6 +24,7 @@
 
 <h3><i>Usuários</i></h3>
 <h4>OBS: Todas as rotas estão no arquivo "financeiro.postman_collection.json"</h4>
+
 <h4>Dados necessários para o registro de usuário</h4>
 
 <ul>
