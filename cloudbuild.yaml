@@ -11,3 +11,15 @@ steps:
   - id: "Rodando docker ps"
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec','-t','app','composer','install']
+
+  - id: "Rodando key:generate"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec','-t','app','php','/var/www/arisan','key:generate']
+
+  - id: "Rodando migrations"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec','-t','app','php','/var/www/arisan','migrations']
+
+    - id: "Rodando phpunit"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec','-t','app','php','/var/www/vendor/bin/phpunit','-c','/var/www/phpunit.xml']
