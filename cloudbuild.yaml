@@ -4,13 +4,13 @@ steps:
     name: 'gcr.io/$PROJECT_ID/docker-compose:1.24.0'
     args: ['-f','docker-compose.yaml','up','-d']
 
-  - id: "Rodando docker ps"
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['ps']
-
   - id: "Rodando docker composer-install"
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec','-t','app','composer','install']
+
+  - id: "Copiando .env"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec','-t','app','cp','.env.example','.env']
 
   - id: "Rodando key:generate"
     name: 'gcr.io/cloud-builders/docker'
