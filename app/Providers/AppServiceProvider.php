@@ -17,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
         'App\Repositories\UsuariosRepositoryEloquent');
         $this->app->bind('App\Repositories\RegistrosRepositoryInterface',
         'App\Repositories\RegistrosRepositoryEloquent');
+        $this->app->bind('App\Repositories\TagsRepositoryInterface',
+        'App\Repositories\TagsRepositoryEloquent');
     }
 
     /**
