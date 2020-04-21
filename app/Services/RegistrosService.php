@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\RegistroRequest;
 use App\Registro;
+use App\Repositories\RegistrosRepositoryInterface;
 use App\Tag;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -14,14 +15,14 @@ class RegistrosService
 {
     private $registro;
 
-    public function __construct(Registro $registro)
+    public function __construct(RegistrosRepositoryInterface $registrosRepositoryInterface)
     {
-        $this->registro = $registro;
+        $this->registrosRepositoryInterface = $registrosRepositoryInterface;
     }
 
     public function index()
     {
-        $registros = auth('api')->user()->registro;
+        $registros = $this->registrosRepositoryInterface->all();
 
         return response()->json([
             'message' => 'Registros!',
@@ -32,7 +33,7 @@ class RegistrosService
 
     public function show($id)
     {
-        $registros = auth('api')->user()->registro()->findOrFail($id);
+        $registros = $this->registrosRepositoryInterface->getRegistro($id);
 
         return response()->json([
             'message' => 'Registros!',
@@ -51,7 +52,7 @@ class RegistrosService
             if(strtotime($request->input('data_vencimento')) < strtotime(Carbon::now()->toDateString()))
                 return "data invalida";
 
-            $registro = $this->registro->create($data);
+            $registro = $this->registrosRepositoryInterface->create($data);
 
             if(isset($data['tags']) && count($data['tags'])){
                 $registro->tags()->sync($data['tags']);
@@ -71,16 +72,15 @@ class RegistrosService
 
     public function update($id, RegistroRequest $request)
     {
-        if($this->registro->where('id', $id)->exists() == false)
-            return response()->json([
-                'message' => 'Registro não encontrado',
-                'success' => false
-            ], Response::HTTP_NOT_FOUND);
+        // if($this->registro->where('id', $id)->exists() == false)
+        //     return response()->json([
+        //         'message' => 'Registro não encontrado',
+        //         'success' => false
+        //     ], Response::HTTP_NOT_FOUND);
 
         $data = $request->all();
 
-        $registros = auth('api')->user()->registro()->findOrFail($id);
-        $registros->update($data);
+        $registro = $this->registrosRepositoryInterface->updateRegistro($id, $data);
 
         if(isset($data['tags']) && count($data['tags'])){
             $registros->tags()->sync($data['tags']);
@@ -94,10 +94,7 @@ class RegistrosService
 
     public function destroy($id)
     {
-            
-        $registro = auth('api')->user()->registro()->findOrFail($id);
-        $registro->tags()->detach();
-        $registro->delete($id); 
+        $registro = $this->registrosRepositoryInterface->deleteRegistro($id);
         
         return response()->json([
             'message' => 'Registro deletado com sucesso',

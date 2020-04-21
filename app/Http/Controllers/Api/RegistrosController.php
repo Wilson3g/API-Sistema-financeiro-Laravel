@@ -13,8 +13,6 @@ use DB;
 
 class RegistrosController extends Controller
 {
-    private $registro;
-
     public function __construct(RegistrosService $registrosService)
     {
         return $this->registrosService = $registrosService;
@@ -27,31 +25,31 @@ class RegistrosController extends Controller
 
     public function show($id)
     {
-        return $this->registrosService->index($id);
+        return $this->registrosService->show($id);
     }
 
     public function store(RegistroRequest $request)
     {
-        return $this->registrosService->index($request);
+        return $this->registrosService->store($request);
     }
 
     public function update($id, RegistroRequest $request)
     {
-        return $this->registrosService->index($id, $request);
+        return $this->registrosService->update($id, $request);
     }
 
     public function destroy($id)
     {
-        return $this->registrosService->index($id);
+        return $this->registrosService->destroy($id);
     }
 
     public function baixa($id)
     {
-        return $this->registrosService->index($id);
+        return $this->registrosService->baixar($id);
     }
 
     public function searchForTags($id)
     {
-        return $this->registrosService->index($id);
+        return $this->registrosService->searchForTags($id);
     }
 }

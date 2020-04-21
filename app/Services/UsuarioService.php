@@ -5,18 +5,20 @@ namespace App\Services;
 use App\User; 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\UsuariosRepositoryInterface;
 use Illuminate\Http\Response;
-
+ 
 class UsuarioService
 {
-    public function __construct(User $user)
+    public function __construct(User $user, UsuariosRepositoryInterface $usuariosRepository)
     {
         $this->user = $user;
+        $this->usuariosRepository = $usuariosRepository;
     }
 
     public function index()
     {
-        $user = $this->user->orderby('id', 'desc')->get();
+        $user = $this->usuariosRepository->all();
 
         return response()->json([
             'message' => 'Todos os perfis',
@@ -36,7 +38,7 @@ class UsuarioService
         try{
             $data['password'] = bcrypt($data['password']);
             
-            $user = $this->user->create($data);
+            $user = $this->usuariosRepository->create($data);
 
             return response()->json([
                 'data'=> [
@@ -51,7 +53,7 @@ class UsuarioService
 
     public function show($id)
     {
-        $user = $this->user->findOrFail($id);
+        $user = $this->usuariosRepository->getUser($id);
 
         return response()->json([
             'message' => 'Usuário encontrado',
@@ -69,9 +71,7 @@ class UsuarioService
                 'success' => false
             ], Response::HTTP_NOT_FOUND);
 
-        $user = $this->user->findOrFail($id);
-
-        $user->update();
+        $user = $this->usuariosRepository->updateUser($id);
 
         return response()->json([
                 'message'=> 'Perfil atualizado com sucesso!',
@@ -87,10 +87,7 @@ class UsuarioService
 
     public function destroy($id)
     {
-
-        $user = $this->user->findOrFail($id); 
-
-        $user->delete($id); 
+        $user = $this->usuariosRepository->deleteUser($id);
 
         return response()->json([
             'message' => 'Perfil deletado com sucesso!',
